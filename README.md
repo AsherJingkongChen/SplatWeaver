@@ -1,4 +1,4 @@
-# SplatWeaver: Learning to Allocate Gaussian Primitives for Generalizable Novel View Synthesis (under review)
+# :medal_military: SplatWeaver: Learning to Allocate Gaussian Primitives for Generalizable Novel View Synthesis (under review)
 <table>
   <tr>
     <td> <img src = "figures/logo.png"> </td>
