@@ -24,7 +24,7 @@ https://github.com/user-attachments/assets/b0752f15-c941-46ad-8996-ea80316a5482
 </p>
 
 ## :label: TODO 
-- [√] Video Demos.
+- [x] Paper and Video Demo.
 - [ ] Implementation code will be released upon acceptance.
 
 
