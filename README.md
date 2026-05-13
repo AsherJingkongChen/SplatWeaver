@@ -21,7 +21,9 @@ https://github.com/user-attachments/assets/b0752f15-c941-46ad-8996-ea80316a5482
  - :heart_eyes: :heart_eyes: SplatWeaver is a feed-forward framework that adaptively allocates Gaussian primitives based on local scene complexity. By concentrating primitives in intricate regions while maintaining sparsity in smooth areas, our approach enables a more principled and flexible allocation of Gaussians within the scene, yielding superior rendering quality with fewer primitives.
 <table>
   <tr>
-    <td> <img src = "figures/performance.png"> </td>
+    <td>
+      <img src="figures/performance.png" width="50%">
+    </td>
   </tr>
 </table>
 
