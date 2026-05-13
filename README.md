@@ -30,6 +30,18 @@ https://github.com/user-attachments/assets/b0752f15-c941-46ad-8996-ea80316a5482
 - [ ] Implementation code will be released upon acceptance.
 
 
+## Citation
+If you find the code helpful in your research or work, please cite the following paper:
+```
+@article{wan2026splatweaver,
+  title={SplatWeaver: Learning to Allocate Gaussian Primitives for Generalizable Novel View Synthesis},
+  author={Wan, Yecong and Li, Fan and Shao, Mingwen and Zuo, Wangmeng},
+  journal={arXiv preprint arXiv:2605.07287},
+  year={2026}
+}
+```
+
+
 
 
 
