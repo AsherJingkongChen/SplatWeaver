@@ -1,4 +1,14 @@
-# :medal_military: SplatWeaver: Learning to Allocate Gaussian Primitives for Generalizable Novel View Synthesis (under review)
+<div align="center">
+<h3> :medal_military: SplatWeaver: Learning to Allocate Gaussian Primitives for Generalizable Novel View Synthesis
+</h3>
+
+[![arXiv](https://img.shields.io/badge/arXiv-2512.06750-b31b1b.svg)](https://arxiv.org/pdf/2605.07287)
+
+
+Yecong Wan, Fan Li, Mingwen Shao, Wangmeng Zuo
+</div>
+
+  
 <table>
   <tr>
     <td> <img src = "figures/logo.png"> </td>
