@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="SplatWeaver: Learning to Allocate Gaussian Primitives for Generalizable Novel View Synthesis">
+  <meta name="keywords" content="3D Colorization">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SplatWeaver: Learning to Allocate Gaussian Primitives for Generalizable Novel View Synthesis</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+  .fancy-title {
+    font-family: 'Cinzel', serif;
+    font-size: 3.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-align: center;
+
+
+    text-shadow:
+      0px 1px 1px rgba(0,0,0,0.15),
+      0px 3px 6px rgba(0,0,0,0.08);
+
+    margin-bottom: 1rem;
+  }
+</style>
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title fancy-title">
+    <span style="color: rgb(255,150,170);">Splat</span><span style="color: rgb(255,209,126);">Weaver</span>
+</h1>
+         <h1 class="title is-1 publication-title" style="text-align: center; font-weight: 700;">
+  <span style="color: black;">
+    Learning to Allocate Gaussian Primitives for Generalizable Novel View Synthesis
+  </span>
+</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a>Yecong Wan</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a>Fan Li</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a>Mingwen Shao</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a>Wangmeng Zuo</a><sup>1</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Harbin Institute of Technology</span>
+            <span class="author-block"><sup>2</sup>Huawei Noah’s Ark Lab</span>
+            <span class="author-block"><sup>3</sup>Shenzhen University of Advanced Technology</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <!--href="" -->
+                <a href="https://arxiv.org/pdf/2605.07287"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/yecongwan/SplatWeaver"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+    <div class="container is-max-desktop">
+      <!-- Concurrent Work. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <div class="content has-text-justified">
+            <video id="replay-video"
+                 controls
+                 muted
+                 preload
+                 playsinline
+                 width="100%">
+            <source src="./static/videos/1.mp4"
+                    type="video/mp4">
+          </video>
+          </div>
+        </div>
+      </div>
+      <!--/ Concurrent Work. -->
+
+    </div>
+  </section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+           In this work, we propose SplatWeaver, a feed-forward framework capable of allocating dynamic number of Gaussian primitives across spatial regions for generalizable novel view synthesis. In contrast to existing methods that typically predict uniform per-pixel or per-voxel Gaussian primitives which fail to adjust for spatially varying complexity, our approach is able to dynamically distribute Gaussians across different spatial regions, enabling more flexible and expressive 3D scene modeling. In particular, we introduce the concept of cardinality Gaussian experts, wherein each expert specializes in predicting a specific number of Gaussian primitives (0 to M). These experts are then orchestrated via a pixel-level routing scheme, enabling flexible allocation of Gaussians across the scene. Rather than directly regressing complete Gaussian parameters, each expert predicts a set of hidden Gaussians comprising positions and associated latent features, which are subsequently aggregated with spatial neighbors to predict the final parameters, yielding more coherent and precise primitive attributes. Additionally, we introduce the high-frequency prior with attendant guidance module and routing regularization to stabilize expert routing and facilitate a more complexity-aware allocation. Such a paradigm endows “dense where complex, sparse where smooth” allocation property, yielding superior efficiency and enhanced rendering quality. We highlight the superiority and effectiveness of SplatWeaver across a wide range of scenarios: it dominantly outperforms existing state-of-the-art methods by delivering more faithful renderings with economic primitives.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+<section class="section">
+    <div class="container is-max-desktop">
+
+      <!-- Concurrent Work. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Method Overview</h2>
+          <div class="content has-text-justified">
+            <img src="./static/images/figure2.jpg">
+          </div>
+<p>
+           Our core insight is to adaptively allocate Gaussian primitives according to scene complexity, instead of predicting a uniform number of per-pixel or per-voxel Gaussians, thereby avoiding redundancy in simple regions and deficiency in complex areas. In particular, we advocate the concept of cardinality Gaussian experts, where each expert is responsible for predicting a specific number of Gaussian primitives (ranging from 0 to M). Allocation across regions is then achieved via pixel-level cardinality Gaussian expert routing.    </p>
+
+        </div>
+        </div>
+        <!-- Concurrent Work. -->
+      <div class="columns is-centered has-text-centered">
+  <div class="column is-half">
+
+    <h2 class="title is-3">Performance</h2>
+
+    <div class="content has-text-centered">
+      <img src="./static/images/figure4.jpg"
+           style="width: 100%; border-radius: 12px;">
+    </div>
+
+    <p>
+      SplatWeaver achieves consistent state-of-the-art performance across three benchmarks in pose-free generalizable novel view synthesis.
+    </p>
+
+  </div>
+</div>
+      <!--/ Concurrent Work. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Visual Comparison</h2>
+          <div class="content has-text-justified">
+            <img src="./static/images/figure3.jpg">
+          </div>
+<p>
+  Comparison of predicted Gaussian distributions and novel view synthesis performance. SplatWeaver dynamically distributes Gaussians across different spatial regions in accordance with scene complexity. By concentrating primitives in intricate areas while maintaining sparsity in smooth regions, it achieves higher-quality rendering with a more compact representation.
+              </p>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{wan2026splatweaver,
+  author    = {Yecong Wan and Fan Li and Mingwen Shao and Wangmeng Zuo},
+  title     = {SplatWeaver: Learning to Allocate Gaussian Primitives for Generalizable Novel View Synthesis},
+  journal   = {arxiv},
+  year      = {2026},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            We borrow the source code for our website.
+              We sincerely appreciate Nerfies authors for their awesome templates.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
