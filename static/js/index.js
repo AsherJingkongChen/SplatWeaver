@@ -39,7 +39,10 @@ $(document).ready(function() {
     }
 
 		// Initialize all div with carousel class
-    var carousels = bulmaCarousel.attach('.carousel', options);
+    var carousels = [];
+    if (typeof bulmaCarousel !== 'undefined' && document.querySelector('.carousel')) {
+      carousels = bulmaCarousel.attach('.carousel', options);
+    }
 
     // Loop on each carousel initialized
     for(var i = 0; i < carousels.length; i++) {
@@ -65,14 +68,17 @@ $(document).ready(function() {
         player.currentTime = player.duration / 100 * this.value;
       })
     }, false);*/
-    preloadInterpolationImages();
+    if ($('#interpolation-slider').length && $('#interpolation-image-wrapper').length) {
+      preloadInterpolationImages();
+      $('#interpolation-slider').on('input', function(event) {
+        setInterpolationImage(this.value);
+      });
+      setInterpolationImage(0);
+      $('#interpolation-slider').prop('max', NUM_INTERP_FRAMES - 1);
+    }
 
-    $('#interpolation-slider').on('input', function(event) {
-      setInterpolationImage(this.value);
-    });
-    setInterpolationImage(0);
-    $('#interpolation-slider').prop('max', NUM_INTERP_FRAMES - 1);
-
-    bulmaSlider.attach();
+    if (typeof bulmaSlider !== 'undefined') {
+      bulmaSlider.attach();
+    }
 
 })
