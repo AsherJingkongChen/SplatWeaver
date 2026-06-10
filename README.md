@@ -6,6 +6,8 @@
   <a href="https://yecongwan.github.io/SplatWeaver/">🌍 Project Page</a>
   &nbsp;|&nbsp;
   <a href="https://arxiv.org/abs/2605.07287">📖 Paper</a>
+  &nbsp;|&nbsp;
+  <a href="https://huggingface.co/Jeasco/SplatWeaver">🤗 Hugging Face</a>
 </p>
 
 Yecong Wan, Fan Li, Mingwen Shao, Wangmeng Zuo
