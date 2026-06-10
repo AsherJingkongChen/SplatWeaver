@@ -28,9 +28,61 @@ https://github.com/user-attachments/assets/b0752f15-c941-46ad-8996-ea80316a5482
   <img src="figures/performance.png" width="50%">
 </p>
 
+
 ## :label: TODO 
 - [x] Paper and Video Demo.
-- [ ] Implementation code will be released upon acceptance.
+- [x] Inference Demo.
+- [x] Training and Evaluation.
+
+
+## Installation
+
+1. Clone SplatWeaver.
+```bash
+git clone https://github.com/yecongwan/SplatWeaver.git
+cd SplatWeaver
+```
+
+2. Create the environment.
+```bash
+conda create -y -n splatweaver python=3.10
+conda activate splatweaver
+pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 --index-url https://download.pytorch.org/whl/cu121
+pip install -r requirements.txt
+```
+
+
+
+## Quick Start
+
+```
+# Inference with the example in the folder “examples/garden”
+
+python demo.py
+```
+
+
+
+## Training
+
+```
+# dataset preprocessing
+
+Please prepare data in the datasets folder. You can add any in-the-wild multi-view data with the general dataset class.
+
+
+# start training:
+python src/main +experiment=multi-dataset trainer.num_nodes=1
+```
+
+
+
+## Evaluation
+
+```
+# Novel View Synthesis
+python src/eval_nvs.py --data_dir ... --ckpt_path ...
+```
 
 
 ## Citation
