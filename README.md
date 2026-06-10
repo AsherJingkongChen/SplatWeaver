@@ -96,7 +96,8 @@ If you find the code helpful in your research or work, please cite the following
 }
 ```
 
-
+## Acknowledgement
+We thank all authors behind these repositories for their excellent work: [VGGT](https://github.com/facebookresearch/vggt), [AnySplat](https://github.com/InternRobotics/AnySplat), and [gsplat](https://github.com/nerfstudio-project/gsplat).
 
 
 
