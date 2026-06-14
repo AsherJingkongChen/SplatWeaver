@@ -30,9 +30,10 @@ https://github.com/user-attachments/assets/b0752f15-c941-46ad-8996-ea80316a5482
 
 
 ## :label: TODO 
-- [x] Paper and Video Demo.
-- [x] Inference Demo.
-- [x] Training and Evaluation.
+- [x] Paper & Demo Video.
+- [x] Pretrained Models and Inference Demo.
+- [x] Training and Evaluation Demo.
+- [ ] Full Training Implementation.
 
 
 ## Installation
