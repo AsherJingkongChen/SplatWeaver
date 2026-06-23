@@ -5,10 +5,10 @@
 #
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 #
-# from src.misc.image_io import save_interpolated_video
-# from src.model.ply_export import export_ply
-# from src.model.model.splatweaver import SplatWeaver
-# from src.utils.image import process_image, visualize_expert_selection
+# from splatweaver.misc.image_io import save_interpolated_video
+# from splatweaver.model.ply_export import export_ply
+# from splatweaver.model.model.splatweaver import SplatWeaver
+# from splatweaver.utils.image import process_image, visualize_expert_selection
 #
 #
 # def main():
@@ -53,10 +53,10 @@ import torch
 # -----------------------------------------------------------------------------
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.misc.image_io import save_interpolated_video
-from src.model.ply_export import export_ply
-from src.model.model.splatweaver import SplatWeaver
-from src.utils.image import process_image, visualize_expert_selection
+from splatweaver.misc.image_io import save_interpolated_video
+from splatweaver.model.ply_export import export_ply
+from splatweaver.model.model.splatweaver import SplatWeaver
+from splatweaver.utils.image import process_image, visualize_expert_selection
 
 
 # -----------------------------------------------------------------------------
