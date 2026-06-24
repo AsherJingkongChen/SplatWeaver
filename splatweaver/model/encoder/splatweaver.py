@@ -286,7 +286,7 @@ class EncoderSplatWeaver(Encoder[EncoderSplatWeaverCfg]):
         image: torch.Tensor,
         global_step: int = 0,
         visualization_dump: Optional[dict] = None,
-    ) -> Gaussians:
+    ) -> EncoderOutput:
         device = image.device
         b, v, _, h, w = image.shape
         distill_infos = {}
@@ -389,7 +389,6 @@ class EncoderSplatWeaver(Encoder[EncoderSplatWeaverCfg]):
                 raise ValueError(f"Invalid pred_head_type: {self.cfg.pred_head_type}")
 
             if self.cfg.render_conf:
-                print('we are render confidene!')
                 conf_valid = torch.quantile(
                     depth_conf.flatten(0, 1), self.cfg.conf_threshold
                 )
@@ -397,45 +396,46 @@ class EncoderSplatWeaver(Encoder[EncoderSplatWeaverCfg]):
             else:
                 conf_valid_mask = torch.ones_like(depth_conf, dtype=torch.bool)
 
-        pts_flat = pts_all.flatten(2, 3)  # B V H*W 3
-        scene_scale = pts_flat.norm(dim=-1).mean().clip(min=1e-8)
+            pts_flat = pts_all.flatten(2, 3)  # B V H*W 3
+            scene_scale = pts_flat.norm(dim=-1).mean().clip(min=1e-8)
 
-        # dpt style gs_head input format choice_pred B V N_expert H W
-        pts_list, feat_list, choice_pred, logit_pred = self.gaussian_param_head(
-            aggregated_tokens_list,
-            pts_all,#.flatten(0, 1).permute(0, 3, 1, 2),
-            image,
-            patch_start_idx=patch_start_idx,
-            image_size=(h, w),
-        )
+            # dpt style gs_head input format choice_pred B V N_expert H W
+            pts_list, feat_list, choice_pred, logit_pred, feat_dense = self.gaussian_param_head(
+                aggregated_tokens_list,
+                pts_all,#.flatten(0, 1).permute(0, 3, 1, 2),
+                image,
+                patch_start_idx=patch_start_idx,
+                image_size=(h, w),
+            )
+            
+            valid_count = [pts_list[i].shape[0] for i in range(b)]
 
-        del aggregated_tokens_list, patch_start_idx
-        torch.cuda.empty_cache()
+            del aggregated_tokens_list, patch_start_idx
+            torch.cuda.empty_cache()
 
+            max_gs = max(f.shape[0] for f in feat_list)
+            neural_feats = self.pad_tensor_list(
+                feat_list, (max_gs,), value=-1e10
+            )
 
-        max_gs = max(f.shape[0] for f in feat_list)
-        neural_feats = self.pad_tensor_list(
-            feat_list, (max_gs,), value=-1e10
-        )
+            neural_pts = self.pad_tensor_list(
+                pts_list, (max_gs,), -1e4
+            )
 
-        neural_pts = self.pad_tensor_list(
-            pts_list, (max_gs,), -1e4
-        )
+            depths = neural_pts[..., -1].unsqueeze(-1)
+            densities = neural_feats[..., 0].sigmoid()
 
-        depths = neural_pts[..., -1].unsqueeze(-1)
-        densities = neural_feats[..., 0].sigmoid()
+            assert len(densities.shape) == 2, "the shape of densities should be (B, N)"
+            assert neural_pts.shape[1] > 1, "the number of voxels should be greater than 1"
 
-        assert len(densities.shape) == 2, "the shape of densities should be (B, N)"
-        assert neural_pts.shape[1] > 1, "the number of voxels should be greater than 1"
+            opacity = self.map_pdf_to_opacity(densities, global_step).squeeze(-1)
 
-        opacity = self.map_pdf_to_opacity(densities, global_step).squeeze(-1)
-
-        gaussians = self.gaussian_adapter.forward(
-            neural_pts,
-            depths,
-            opacity,
-            neural_feats[..., 1:].squeeze(2),
-        )
+            gaussians = self.gaussian_adapter.forward(
+                neural_pts,
+                depths,
+                opacity,
+                neural_feats[..., 1:].squeeze(2),
+            )
 
         if visualization_dump is not None:
             visualization_dump["depth"] = rearrange(
@@ -446,19 +446,11 @@ class EncoderSplatWeaver(Encoder[EncoderSplatWeaverCfg]):
             )
 
         infos = {}
+        infos["feats"] = feat_dense
+        infos["valid_count"] = valid_count
         infos["scene_scale"] = scene_scale
         infos["Gaussians_ratio"] = densities.shape[1] / (h * w * v)
 
-        print(
-            f"scene scale: {scene_scale:.3f}, pixel-wise num: {h*w*v}, after allocation: {neural_pts.shape[1]}, allocation ratio: {infos['Gaussians_ratio']:.3f}"
-        )
-        # print(
-        #     f"Gaussians attributes: \n"
-        #     f"opacities: mean: {gaussians.opacities.mean()}, min: {gaussians.opacities.min()}, max: {gaussians.opacities.max()} \n"
-        #     f"scales: mean: {gaussians.scales.mean()}, min: {gaussians.scales.min()}, max: {gaussians.scales.max()}"
-        # )
-
-        print("B:", b, "V:", v, "H:", h, "W:", w)
         extrinsic_padding = (
             torch.tensor([0, 0, 0, 1], device=device, dtype=extrinsic.dtype)
             .view(1, 1, 1, 4)
@@ -476,7 +468,7 @@ class EncoderSplatWeaver(Encoder[EncoderSplatWeaverCfg]):
                 extrinsic=torch.cat([extrinsic, extrinsic_padding], dim=2).inverse(),
                 intrinsic=intrinsic,
             ),
-            depth_dict=dict(depth=depth_map, conf_valid_mask=conf_valid_mask),
+            depth_dict=dict(depth=depth_map, depth_conf=depth_conf, conf_valid_mask=conf_valid_mask),
             infos=infos,
             distill_infos=distill_infos,
             choice = choice_pred,

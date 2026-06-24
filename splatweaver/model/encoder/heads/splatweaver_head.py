@@ -349,18 +349,24 @@ class SplatWeaver_Head(DPTHead):
         feat_list = []
         choice_list = []
         logit_list = []
+        feat_dense_list = []
         for B_i in range(B):
-
-            pts_bi, feat_bi, choice_i, logit_i = self._forward_impl(B_i, points[B_i],
+            pts_bi, feat_bi, choice_i, logit_i, out1_i = self._forward_impl(B_i, points[B_i],
                 encoder_tokens, imgs[B_i], patch_start_idx
             )
             pts_list.append(pts_bi)
             feat_list.append(feat_bi)
             choice_list.append(choice_i)
             logit_list.append(logit_i)
+            feat_dense_list.append(out1_i)
 
-
-        return pts_list, feat_list, torch.stack(choice_list, dim=0), torch.stack(logit_list, dim=0)
+        return (
+            pts_list,
+            feat_list,
+            torch.stack(choice_list, dim=0),
+            torch.stack(logit_list, dim=0),
+            torch.stack(feat_dense_list, dim=0),
+        )
 
     def _forward_impl(self,B_i, points, encoder_tokens: List[torch.Tensor], imgs, patch_start_idx: int = 5, frames_start_idx: int = None, frames_end_idx: int = None):
         # points : # V, H, W, 3
@@ -415,5 +421,5 @@ class SplatWeaver_Head(DPTHead):
         out2 = out1 + out*wave_feat
         pts, feat, choice, logit = self.gs_moe(out1,out2,points)
 
-        return pts, feat, choice, logit
+        return pts, feat, choice, logit, out1
 
