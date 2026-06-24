@@ -123,8 +123,7 @@ class EncoderSplatWeaver(Encoder[EncoderSplatWeaverCfg]):
 
     def __init__(self, cfg: EncoderSplatWeaverCfg) -> None:
         super().__init__(cfg)
-        model_full = VGGT.from_pretrained("facebook/VGGT-1B")
-        # model_full = VGGT()
+        model_full = VGGT.from_pretrained(cfg.pretrained_weights) if cfg.pretrained_weights else VGGT()
         self.aggregator = model_full.aggregator.to(torch.bfloat16)
         self.freeze_backbone = cfg.freeze_backbone
         self.distill = cfg.distill
