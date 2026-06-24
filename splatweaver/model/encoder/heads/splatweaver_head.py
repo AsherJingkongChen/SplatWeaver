@@ -86,9 +86,7 @@ def knn_faiss(x: torch.Tensor, k: int, nlist: int = None, nprobe: int = 4):
     N, D = x.shape
 
     if N <= k:
-        torch.rand(908016, 38)
-        print(f"Number of points ({N}) <= k ({k})")
-        #raise ValueError(f"Number of points ({N}) <= k ({k})")
+        raise ValueError(f"Number of points ({N}) <= k ({k})")
 
     if nlist is None:
         nlist =  N // 10000
@@ -262,7 +260,6 @@ class CardinalityGaussian(nn.Module):
         for e, out_dim in enumerate(self.expert_out_dims):
             mask = (assigned == e)
             idxs = mask.nonzero(as_tuple=False).squeeze(-1)  # indices of pixels assigned to expert e
-            print('Export: ',e, 'Number of pixels: ',len(idxs))
             if idxs.numel() == 0 or out_dim == 0:
                 # no pixels or no-op expert -> skip (no slots created)
                 continue
@@ -294,7 +291,6 @@ class CardinalityGaussian(nn.Module):
         else:
             slots_final = torch.cat(slots_list, dim=0)
         slots_final_pos, slots_final_param = self.gs_predictor(slots_final)
-        print('Number of pixels: ', N, 'Number of predicted: ', slots_final.shape[0], 'Number of final: ', slots_final_param.shape[0])
 
         return slots_final_pos, slots_final_param, choices.view(B, H, W, self.n_experts).permute(0,3,1,2).contiguous(), logits.view(B, H, W, self.n_experts).permute(0,3,1,2).contiguous()
 
